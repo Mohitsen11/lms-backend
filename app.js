@@ -35,7 +35,8 @@ app.get('/ping' , ( req , res) => {
 app.use('/api/v1/user' , userRoute);
 app.use('/api/v1/course' , courseRoute);
 app.use('/api/v1/payment' , paymentRoute);
-app.use('/api/v1' , miscRoute)
+app.use('/api/v1' , miscRoute);
+
 app.use('*' , ( req , res) => {
     res.status(404).send('Oops!! 404 page not found');
 });
