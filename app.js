@@ -5,6 +5,7 @@ import errorMiddleware from './middlewares/error.middleware.js';
 import userRoute from './routes/user.routes.js';
 import courseRoute from './routes/course.routes.js';
 import paymentRoute from './routes/payment.routes.js';
+import miscRoute from './routes/miscellaneous.routes.js';
 import connectToDB from './config/dbConnection.js';
 import morgan from 'morgan';
 
@@ -34,7 +35,7 @@ app.get('/ping' , ( req , res) => {
 app.use('/api/v1/user' , userRoute);
 app.use('/api/v1/course' , courseRoute);
 app.use('/api/v1/payment' , paymentRoute);
-
+app.use('/api/v1' , miscRoute)
 app.use('*' , ( req , res) => {
     res.status(404).send('Oops!! 404 page not found');
 });
