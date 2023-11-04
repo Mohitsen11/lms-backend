@@ -32,7 +32,7 @@ const register = async (req , res, next) => {
         password,
         avatar :{
             public_id : email,
-            secure_url : 'https://unsplash.com/photos/a-large-group-of-fish-swimming-in-the-ocean-WLeWJW_WneE'
+            secure_url : 'https://res.cloudinary.com/du9jzqlpt/image/upload/v1674647316/avatar_drzgxv.jpg'
         }
     });
 

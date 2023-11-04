@@ -12,8 +12,15 @@ const app = express();
 
 connectToDB();
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+
 app.use(cors({
-    origin : [process.env.FRONTEND_URL],
+    origin : process.env.FRONTEND_URL,
     credentials : true
 }));
 app.use(express.json());
