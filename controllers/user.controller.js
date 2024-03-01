@@ -241,7 +241,7 @@ const updateUser = async function(req, res , next){
 
     const { username } = req.body;
 
-    const {id} = req.user;
+    const {id} = req.params;
 
     const user = await User.findById(id);
 
