@@ -16,6 +16,7 @@ const isLoggedIn = function(req , res , next){
     }
 
     req.user = tokenDetails;
+    console.log(req.user);
 
     next();
 }
