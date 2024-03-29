@@ -20,7 +20,7 @@ export const razorpayApiKey = async (req , res , next) => {
     }
 }
 export const buySubscription = async (req , res , next) => {
-        
+    try {
         const { id } = req.user;
         console.log(id);
 
@@ -37,7 +37,7 @@ export const buySubscription = async (req , res , next) => {
         }
         console.log('User is not an ADMIN');
 
-        try {
+     
             const subscription = await razorpay.subscriptions.create({
                 plan_id: process.env.RAZORPAY_PLAN_ID,
                 customer_notify: 1,
@@ -67,7 +67,7 @@ export const verifySubscription = async (req , res , next) => {
 
     try {
 
-        const { id } = req.user.id;
+        const { id } = req.user;
 
         const user = await User.findById(id);
 
@@ -75,27 +75,29 @@ export const verifySubscription = async (req , res , next) => {
             return next(new AppError('Unauthorized, please login', 500));
         }
 
-        const { payment_id , payment_signature , subscription_id} = req.body;
+        const { razorpay_payment_id , razorpay_subscription_id , razorpay_signature} = req.body;
 
-        const subscription = crypto.createHmac('sha256' , process.env.RAZORPAY_SECRET).update(`${payment_id}|${subscription_id}`).digest('hex');
+        const subscription = crypto.createHmac('sha256' , process.env.RAZORPAY_SECRET).update(`${razorpay_payment_id}|${razorpay_subscription_id}`).digest('hex');
 
         //check the both subscription and payment_signature
-        if(subscription !== payment_signature){
+        if(subscription !== razorpay_signature){
             return next(new AppError('Payment not verified, please try again' , 500));
         }
 
         // save the details into payment collection
-        await Payment.create({
-            payment_id,
-            payment_signature,
-            subscription_id
-        });
-
         // update user mode subscription status
         user.subscription.status = 'active';
 
         await user.save();
+        
+        await Payment.create({
+            razorpay_payment_id,
+            razorpay_signature,
+            razorpay_subscription_id
+        });
 
+
+        console.log(user);
         res.status(200).json({
             success :true,
             message: 'Payment verified successfully'
