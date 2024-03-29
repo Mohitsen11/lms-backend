@@ -20,4 +20,3 @@ const sendEmail = async function(email , subject , message){
 }
 
 export default sendEmail;
-
